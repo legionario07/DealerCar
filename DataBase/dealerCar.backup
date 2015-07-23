@@ -1,0 +1,1021 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.4.4
+-- Dumped by pg_dump version 9.4.4
+-- Started on 2015-07-23 08:34:37
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 196 (class 3079 OID 11855)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2136 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 182 (class 1259 OID 16485)
+-- Name: begin1001; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE begin1001
+    START WITH 1001
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE begin1001 OWNER TO postgres;
+
+--
+-- TOC entry 183 (class 1259 OID 16489)
+-- Name: begincidades; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE begincidades
+    START WITH 10000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE begincidades OWNER TO postgres;
+
+--
+-- TOC entry 185 (class 1259 OID 16493)
+-- Name: beginclientes; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE beginclientes
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE beginclientes OWNER TO postgres;
+
+--
+-- TOC entry 184 (class 1259 OID 16491)
+-- Name: beginfuncionarios; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE beginfuncionarios
+    START WITH 100
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE beginfuncionarios OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 181 (class 1259 OID 16471)
+-- Name: carros; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE carros (
+    id_carros integer DEFAULT nextval('begin1001'::regclass) NOT NULL,
+    placa character varying(7) NOT NULL,
+    marca character varying(20),
+    ano character varying(4) NOT NULL,
+    modelo character varying(45),
+    cod_categorias integer NOT NULL
+);
+
+
+ALTER TABLE carros OWNER TO postgres;
+
+--
+-- TOC entry 180 (class 1259 OID 16469)
+-- Name: carros_cod_categorias_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE carros_cod_categorias_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE carros_cod_categorias_seq OWNER TO postgres;
+
+--
+-- TOC entry 2137 (class 0 OID 0)
+-- Dependencies: 180
+-- Name: carros_cod_categorias_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE carros_cod_categorias_seq OWNED BY carros.cod_categorias;
+
+
+--
+-- TOC entry 179 (class 1259 OID 16467)
+-- Name: carros_id_carros_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE carros_id_carros_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE carros_id_carros_seq OWNER TO postgres;
+
+--
+-- TOC entry 2138 (class 0 OID 0)
+-- Dependencies: 179
+-- Name: carros_id_carros_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE carros_id_carros_seq OWNED BY carros.id_carros;
+
+
+--
+-- TOC entry 178 (class 1259 OID 16443)
+-- Name: categorias; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE categorias (
+    cod_categorias integer NOT NULL,
+    descricao character varying(45) NOT NULL,
+    quantidade integer NOT NULL,
+    preco_diario numeric NOT NULL,
+    CONSTRAINT categorias_preco_diario_check CHECK ((preco_diario > (0)::numeric)),
+    CONSTRAINT categorias_quantidade_check CHECK ((quantidade >= 0))
+);
+
+
+ALTER TABLE categorias OWNER TO postgres;
+
+--
+-- TOC entry 177 (class 1259 OID 16441)
+-- Name: categorias_cod_categorias_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE categorias_cod_categorias_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE categorias_cod_categorias_seq OWNER TO postgres;
+
+--
+-- TOC entry 2139 (class 0 OID 0)
+-- Dependencies: 177
+-- Name: categorias_cod_categorias_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE categorias_cod_categorias_seq OWNED BY categorias.cod_categorias;
+
+
+--
+-- TOC entry 173 (class 1259 OID 16405)
+-- Name: cidades; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE cidades (
+    cod_cidades integer DEFAULT nextval('begincidades'::regclass) NOT NULL,
+    nome character varying(25) NOT NULL,
+    uf character(2) NOT NULL
+);
+
+
+ALTER TABLE cidades OWNER TO postgres;
+
+--
+-- TOC entry 172 (class 1259 OID 16403)
+-- Name: cidades_cod_cidades_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE cidades_cod_cidades_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE cidades_cod_cidades_seq OWNER TO postgres;
+
+--
+-- TOC entry 2140 (class 0 OID 0)
+-- Dependencies: 172
+-- Name: cidades_cod_cidades_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE cidades_cod_cidades_seq OWNED BY cidades.cod_cidades;
+
+
+--
+-- TOC entry 176 (class 1259 OID 16415)
+-- Name: clientes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE clientes (
+    cod_clientes integer DEFAULT nextval('beginclientes'::regclass) NOT NULL,
+    nome character varying(75) NOT NULL,
+    data_nasc date NOT NULL,
+    nome_mae character varying(50),
+    endereco character varying(50) NOT NULL,
+    cpf character varying(11) NOT NULL,
+    rg character varying(20),
+    email character varying(40),
+    telefone character varying(13) NOT NULL,
+    cod_cidades integer NOT NULL
+);
+
+
+ALTER TABLE clientes OWNER TO postgres;
+
+--
+-- TOC entry 175 (class 1259 OID 16413)
+-- Name: clientes_cod_cidades_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE clientes_cod_cidades_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE clientes_cod_cidades_seq OWNER TO postgres;
+
+--
+-- TOC entry 2141 (class 0 OID 0)
+-- Dependencies: 175
+-- Name: clientes_cod_cidades_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE clientes_cod_cidades_seq OWNED BY clientes.cod_cidades;
+
+
+--
+-- TOC entry 174 (class 1259 OID 16411)
+-- Name: clientes_cod_clientes_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE clientes_cod_clientes_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE clientes_cod_clientes_seq OWNER TO postgres;
+
+--
+-- TOC entry 2142 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: clientes_cod_clientes_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE clientes_cod_clientes_seq OWNED BY clientes.cod_clientes;
+
+
+--
+-- TOC entry 194 (class 1259 OID 16646)
+-- Name: devolucoes; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE devolucoes (
+    cod_devolucoes integer NOT NULL,
+    qtde_diarias integer,
+    valor_combustivel numeric,
+    km_devolucao integer NOT NULL,
+    data_devolucao time without time zone NOT NULL,
+    valor_taxas numeric,
+    placa character(7) NOT NULL,
+    CONSTRAINT devolucoes_qtde_diarias_check CHECK ((qtde_diarias >= 0)),
+    CONSTRAINT devolucoes_valor_combustivel_check CHECK ((valor_combustivel >= (0)::numeric)),
+    CONSTRAINT devolucoes_valor_taxas_check CHECK ((valor_taxas >= (0)::numeric))
+);
+
+
+ALTER TABLE devolucoes OWNER TO postgres;
+
+--
+-- TOC entry 193 (class 1259 OID 16644)
+-- Name: devolucoes_cod_devolucoes_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE devolucoes_cod_devolucoes_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE devolucoes_cod_devolucoes_seq OWNER TO postgres;
+
+--
+-- TOC entry 2143 (class 0 OID 0)
+-- Dependencies: 193
+-- Name: devolucoes_cod_devolucoes_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE devolucoes_cod_devolucoes_seq OWNED BY devolucoes.cod_devolucoes;
+
+
+--
+-- TOC entry 188 (class 1259 OID 16499)
+-- Name: funcionarios; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE funcionarios (
+    cod_funcionarios integer DEFAULT nextval('beginfuncionarios'::regclass) NOT NULL,
+    nome character varying(75) NOT NULL,
+    data_nasc date NOT NULL,
+    endereco character varying(75),
+    telefone character varying(13),
+    cod_cidades integer NOT NULL
+);
+
+
+ALTER TABLE funcionarios OWNER TO postgres;
+
+--
+-- TOC entry 187 (class 1259 OID 16497)
+-- Name: funcionarios_cod_cidades_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE funcionarios_cod_cidades_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE funcionarios_cod_cidades_seq OWNER TO postgres;
+
+--
+-- TOC entry 2144 (class 0 OID 0)
+-- Dependencies: 187
+-- Name: funcionarios_cod_cidades_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE funcionarios_cod_cidades_seq OWNED BY funcionarios.cod_cidades;
+
+
+--
+-- TOC entry 186 (class 1259 OID 16495)
+-- Name: funcionarios_cod_funcionarios_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE funcionarios_cod_funcionarios_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE funcionarios_cod_funcionarios_seq OWNER TO postgres;
+
+--
+-- TOC entry 2145 (class 0 OID 0)
+-- Dependencies: 186
+-- Name: funcionarios_cod_funcionarios_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE funcionarios_cod_funcionarios_seq OWNED BY funcionarios.cod_funcionarios;
+
+
+--
+-- TOC entry 190 (class 1259 OID 16568)
+-- Name: reservas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE reservas (
+    cod_reservas integer NOT NULL,
+    data_retirada time without time zone,
+    data_devolucao date,
+    cod_categorias integer NOT NULL,
+    cod_clientes integer NOT NULL,
+    cod_funcionarios integer NOT NULL,
+    preco_diario numeric NOT NULL,
+    CONSTRAINT reservas_preco_diario_check CHECK ((preco_diario >= (0)::numeric))
+);
+
+
+ALTER TABLE reservas OWNER TO postgres;
+
+--
+-- TOC entry 189 (class 1259 OID 16566)
+-- Name: reservas_cod_reservas_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE reservas_cod_reservas_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE reservas_cod_reservas_seq OWNER TO postgres;
+
+--
+-- TOC entry 2146 (class 0 OID 0)
+-- Dependencies: 189
+-- Name: reservas_cod_reservas_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE reservas_cod_reservas_seq OWNED BY reservas.cod_reservas;
+
+
+--
+-- TOC entry 192 (class 1259 OID 16620)
+-- Name: retiradas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE retiradas (
+    cod_retiradas integer NOT NULL,
+    data_retirada time without time zone NOT NULL,
+    data_devolucao time without time zone,
+    km_retirada integer NOT NULL,
+    cod_clientes integer NOT NULL,
+    cod_funcionarios integer NOT NULL,
+    placa character(7) NOT NULL,
+    preco_diario numeric NOT NULL
+);
+
+
+ALTER TABLE retiradas OWNER TO postgres;
+
+--
+-- TOC entry 191 (class 1259 OID 16618)
+-- Name: retiradas_cod_retiradas_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE retiradas_cod_retiradas_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE retiradas_cod_retiradas_seq OWNER TO postgres;
+
+--
+-- TOC entry 2147 (class 0 OID 0)
+-- Dependencies: 191
+-- Name: retiradas_cod_retiradas_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE retiradas_cod_retiradas_seq OWNED BY retiradas.cod_retiradas;
+
+
+--
+-- TOC entry 195 (class 1259 OID 16667)
+-- Name: usuarios; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE usuarios (
+    usuario character(8) NOT NULL,
+    senha character(8) NOT NULL,
+    administrador boolean DEFAULT false NOT NULL,
+    cod_funcionarios integer NOT NULL
+);
+
+
+ALTER TABLE usuarios OWNER TO postgres;
+
+--
+-- TOC entry 1951 (class 2604 OID 16475)
+-- Name: cod_categorias; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY carros ALTER COLUMN cod_categorias SET DEFAULT nextval('carros_cod_categorias_seq'::regclass);
+
+
+--
+-- TOC entry 1948 (class 2604 OID 16446)
+-- Name: cod_categorias; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY categorias ALTER COLUMN cod_categorias SET DEFAULT nextval('categorias_cod_categorias_seq'::regclass);
+
+
+--
+-- TOC entry 1946 (class 2604 OID 16419)
+-- Name: cod_cidades; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY clientes ALTER COLUMN cod_cidades SET DEFAULT nextval('clientes_cod_cidades_seq'::regclass);
+
+
+--
+-- TOC entry 1958 (class 2604 OID 16649)
+-- Name: cod_devolucoes; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY devolucoes ALTER COLUMN cod_devolucoes SET DEFAULT nextval('devolucoes_cod_devolucoes_seq'::regclass);
+
+
+--
+-- TOC entry 1953 (class 2604 OID 16503)
+-- Name: cod_cidades; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY funcionarios ALTER COLUMN cod_cidades SET DEFAULT nextval('funcionarios_cod_cidades_seq'::regclass);
+
+
+--
+-- TOC entry 1955 (class 2604 OID 16571)
+-- Name: cod_reservas; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY reservas ALTER COLUMN cod_reservas SET DEFAULT nextval('reservas_cod_reservas_seq'::regclass);
+
+
+--
+-- TOC entry 1957 (class 2604 OID 16623)
+-- Name: cod_retiradas; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY retiradas ALTER COLUMN cod_retiradas SET DEFAULT nextval('retiradas_cod_retiradas_seq'::regclass);
+
+
+--
+-- TOC entry 2148 (class 0 OID 0)
+-- Dependencies: 182
+-- Name: begin1001; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('begin1001', 1002, true);
+
+
+--
+-- TOC entry 2149 (class 0 OID 0)
+-- Dependencies: 183
+-- Name: begincidades; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('begincidades', 10000, false);
+
+
+--
+-- TOC entry 2150 (class 0 OID 0)
+-- Dependencies: 185
+-- Name: beginclientes; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('beginclientes', 1, false);
+
+
+--
+-- TOC entry 2151 (class 0 OID 0)
+-- Dependencies: 184
+-- Name: beginfuncionarios; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('beginfuncionarios', 100, false);
+
+
+--
+-- TOC entry 2114 (class 0 OID 16471)
+-- Dependencies: 181
+-- Data for Name: carros; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY carros (id_carros, placa, marca, ano, modelo, cod_categorias) FROM stdin;
+1002	dgx6941	Chevrolet	2003	Celta	1
+\.
+
+
+--
+-- TOC entry 2152 (class 0 OID 0)
+-- Dependencies: 180
+-- Name: carros_cod_categorias_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('carros_cod_categorias_seq', 1, true);
+
+
+--
+-- TOC entry 2153 (class 0 OID 0)
+-- Dependencies: 179
+-- Name: carros_id_carros_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('carros_id_carros_seq', 1, false);
+
+
+--
+-- TOC entry 2111 (class 0 OID 16443)
+-- Dependencies: 178
+-- Data for Name: categorias; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY categorias (cod_categorias, descricao, quantidade, preco_diario) FROM stdin;
+1	Passeio	3	54.00
+\.
+
+
+--
+-- TOC entry 2154 (class 0 OID 0)
+-- Dependencies: 177
+-- Name: categorias_cod_categorias_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('categorias_cod_categorias_seq', 1, true);
+
+
+--
+-- TOC entry 2106 (class 0 OID 16405)
+-- Dependencies: 173
+-- Data for Name: cidades; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY cidades (cod_cidades, nome, uf) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2155 (class 0 OID 0)
+-- Dependencies: 172
+-- Name: cidades_cod_cidades_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('cidades_cod_cidades_seq', 1, false);
+
+
+--
+-- TOC entry 2109 (class 0 OID 16415)
+-- Dependencies: 176
+-- Data for Name: clientes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY clientes (cod_clientes, nome, data_nasc, nome_mae, endereco, cpf, rg, email, telefone, cod_cidades) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2156 (class 0 OID 0)
+-- Dependencies: 175
+-- Name: clientes_cod_cidades_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('clientes_cod_cidades_seq', 1, false);
+
+
+--
+-- TOC entry 2157 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: clientes_cod_clientes_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('clientes_cod_clientes_seq', 1, false);
+
+
+--
+-- TOC entry 2127 (class 0 OID 16646)
+-- Dependencies: 194
+-- Data for Name: devolucoes; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY devolucoes (cod_devolucoes, qtde_diarias, valor_combustivel, km_devolucao, data_devolucao, valor_taxas, placa) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2158 (class 0 OID 0)
+-- Dependencies: 193
+-- Name: devolucoes_cod_devolucoes_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('devolucoes_cod_devolucoes_seq', 1, false);
+
+
+--
+-- TOC entry 2121 (class 0 OID 16499)
+-- Dependencies: 188
+-- Data for Name: funcionarios; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY funcionarios (cod_funcionarios, nome, data_nasc, endereco, telefone, cod_cidades) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2159 (class 0 OID 0)
+-- Dependencies: 187
+-- Name: funcionarios_cod_cidades_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('funcionarios_cod_cidades_seq', 1, false);
+
+
+--
+-- TOC entry 2160 (class 0 OID 0)
+-- Dependencies: 186
+-- Name: funcionarios_cod_funcionarios_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('funcionarios_cod_funcionarios_seq', 1, false);
+
+
+--
+-- TOC entry 2123 (class 0 OID 16568)
+-- Dependencies: 190
+-- Data for Name: reservas; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY reservas (cod_reservas, data_retirada, data_devolucao, cod_categorias, cod_clientes, cod_funcionarios, preco_diario) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2161 (class 0 OID 0)
+-- Dependencies: 189
+-- Name: reservas_cod_reservas_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('reservas_cod_reservas_seq', 1, false);
+
+
+--
+-- TOC entry 2125 (class 0 OID 16620)
+-- Dependencies: 192
+-- Data for Name: retiradas; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY retiradas (cod_retiradas, data_retirada, data_devolucao, km_retirada, cod_clientes, cod_funcionarios, placa, preco_diario) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2162 (class 0 OID 0)
+-- Dependencies: 191
+-- Name: retiradas_cod_retiradas_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('retiradas_cod_retiradas_seq', 1, false);
+
+
+--
+-- TOC entry 2128 (class 0 OID 16667)
+-- Dependencies: 195
+-- Data for Name: usuarios; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY usuarios (usuario, senha, administrador, cod_funcionarios) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1972 (class 2606 OID 16477)
+-- Name: carros_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY carros
+    ADD CONSTRAINT carros_pkey PRIMARY KEY (id_carros);
+
+
+--
+-- TOC entry 1974 (class 2606 OID 16479)
+-- Name: carros_placa_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY carros
+    ADD CONSTRAINT carros_placa_key UNIQUE (placa);
+
+
+--
+-- TOC entry 1970 (class 2606 OID 16452)
+-- Name: categorias_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY categorias
+    ADD CONSTRAINT categorias_pkey PRIMARY KEY (cod_categorias);
+
+
+--
+-- TOC entry 1964 (class 2606 OID 16410)
+-- Name: cidades_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY cidades
+    ADD CONSTRAINT cidades_pkey PRIMARY KEY (cod_cidades);
+
+
+--
+-- TOC entry 1966 (class 2606 OID 16423)
+-- Name: clientes_cpf_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY clientes
+    ADD CONSTRAINT clientes_cpf_key UNIQUE (cpf);
+
+
+--
+-- TOC entry 1968 (class 2606 OID 16421)
+-- Name: clientes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY clientes
+    ADD CONSTRAINT clientes_pkey PRIMARY KEY (cod_clientes);
+
+
+--
+-- TOC entry 1982 (class 2606 OID 16657)
+-- Name: devolucoes_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY devolucoes
+    ADD CONSTRAINT devolucoes_pkey PRIMARY KEY (cod_devolucoes);
+
+
+--
+-- TOC entry 1976 (class 2606 OID 16505)
+-- Name: funcionarios_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY funcionarios
+    ADD CONSTRAINT funcionarios_pkey PRIMARY KEY (cod_funcionarios);
+
+
+--
+-- TOC entry 1978 (class 2606 OID 16576)
+-- Name: reservas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY reservas
+    ADD CONSTRAINT reservas_pkey PRIMARY KEY (cod_reservas);
+
+
+--
+-- TOC entry 1980 (class 2606 OID 16628)
+-- Name: retiradas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY retiradas
+    ADD CONSTRAINT retiradas_pkey PRIMARY KEY (cod_retiradas);
+
+
+--
+-- TOC entry 1984 (class 2606 OID 16672)
+-- Name: usuarios_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY usuarios
+    ADD CONSTRAINT usuarios_pkey PRIMARY KEY (usuario);
+
+
+--
+-- TOC entry 1986 (class 2606 OID 16480)
+-- Name: carros_cod_categorias_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY carros
+    ADD CONSTRAINT carros_cod_categorias_fkey FOREIGN KEY (cod_categorias) REFERENCES categorias(cod_categorias);
+
+
+--
+-- TOC entry 1985 (class 2606 OID 16424)
+-- Name: clientes_cod_cidades_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY clientes
+    ADD CONSTRAINT clientes_cod_cidades_fkey FOREIGN KEY (cod_cidades) REFERENCES cidades(cod_cidades);
+
+
+--
+-- TOC entry 1994 (class 2606 OID 16658)
+-- Name: devolucoes_placa_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY devolucoes
+    ADD CONSTRAINT devolucoes_placa_fkey FOREIGN KEY (placa) REFERENCES carros(placa);
+
+
+--
+-- TOC entry 1987 (class 2606 OID 16506)
+-- Name: funcionarios_cod_cidades_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY funcionarios
+    ADD CONSTRAINT funcionarios_cod_cidades_fkey FOREIGN KEY (cod_cidades) REFERENCES cidades(cod_cidades);
+
+
+--
+-- TOC entry 1989 (class 2606 OID 16582)
+-- Name: reservas_cod_categorias_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY reservas
+    ADD CONSTRAINT reservas_cod_categorias_fkey FOREIGN KEY (cod_categorias) REFERENCES categorias(cod_categorias);
+
+
+--
+-- TOC entry 1988 (class 2606 OID 16577)
+-- Name: reservas_cod_clientes_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY reservas
+    ADD CONSTRAINT reservas_cod_clientes_fkey FOREIGN KEY (cod_clientes) REFERENCES clientes(cod_clientes);
+
+
+--
+-- TOC entry 1990 (class 2606 OID 16587)
+-- Name: reservas_cod_funcionarios_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY reservas
+    ADD CONSTRAINT reservas_cod_funcionarios_fkey FOREIGN KEY (cod_funcionarios) REFERENCES funcionarios(cod_funcionarios);
+
+
+--
+-- TOC entry 1992 (class 2606 OID 16634)
+-- Name: retiradas_cod_clientes_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY retiradas
+    ADD CONSTRAINT retiradas_cod_clientes_fkey FOREIGN KEY (cod_clientes) REFERENCES clientes(cod_clientes);
+
+
+--
+-- TOC entry 1993 (class 2606 OID 16639)
+-- Name: retiradas_cod_funcionarios_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY retiradas
+    ADD CONSTRAINT retiradas_cod_funcionarios_fkey FOREIGN KEY (cod_funcionarios) REFERENCES funcionarios(cod_funcionarios);
+
+
+--
+-- TOC entry 1991 (class 2606 OID 16629)
+-- Name: retiradas_placa_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY retiradas
+    ADD CONSTRAINT retiradas_placa_fkey FOREIGN KEY (placa) REFERENCES carros(placa);
+
+
+--
+-- TOC entry 1995 (class 2606 OID 16673)
+-- Name: usuarios_cod_funcionarios_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY usuarios
+    ADD CONSTRAINT usuarios_cod_funcionarios_fkey FOREIGN KEY (cod_funcionarios) REFERENCES funcionarios(cod_funcionarios);
+
+
+--
+-- TOC entry 2135 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2015-07-23 08:34:38
+
+--
+-- PostgreSQL database dump complete
+--
+
